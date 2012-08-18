@@ -14,8 +14,8 @@ public final class LogDetailActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
-            LogDetailFragment fragment = LogDetailFragment.newInstance((Log) getIntent()
-                    .getParcelableExtra(LogDetailFragment.ARG_LOG));
+            LogDetailFragment fragment = LogDetailFragment.newInstance(getIntent().getLongExtra(
+                    LogDetailFragment.ARG_LOG, -1L));
             getFragmentManager().beginTransaction().add(R.id.log_detail_container, fragment)
                     .commit();
         } // if
@@ -26,7 +26,7 @@ public final class LogDetailActivity extends Activity {
         if (item.getItemId() == android.R.id.home) {
             navigateUpTo(new Intent(this, LogListActivity.class));
             return true;
-        }  // if
+        } // if
         return super.onOptionsItemSelected(item);
     } // onOptionsItemSelected(MenuItem)
 } // class LogDetailActivity

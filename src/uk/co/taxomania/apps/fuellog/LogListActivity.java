@@ -20,7 +20,7 @@ public final class LogListActivity extends Activity implements LogListFragment.C
     } // onCreate(Bundle)
 
     @Override
-    public void onItemSelected(final Log id) {
+    public void onItemSelected(final long id) {
         if (mTwoPane) {
             LogDetailFragment fragment = LogDetailFragment.newInstance(id);
             getFragmentManager().beginTransaction().replace(R.id.log_detail_container, fragment)

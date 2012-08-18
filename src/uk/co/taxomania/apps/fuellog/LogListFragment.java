@@ -1,14 +1,16 @@
 package uk.co.taxomania.apps.fuellog;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import uk.co.taxomania.apps.fuellog.DataHelper.Logs;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 public final class LogListFragment extends ListFragment {
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -17,7 +19,7 @@ public final class LogListFragment extends ListFragment {
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
     interface Callback {
-        void onItemSelected(Log log);
+        void onItemSelected(long id);
     } // interface Callback
 
     public LogListFragment() {
@@ -26,13 +28,42 @@ public final class LogListFragment extends ListFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final List<Log> list = new ArrayList<Log>(3);
-        list.add(new Log(0, 0, 0));
-        list.add(new Log(7.3, 0.9, 5));
-        list.add(new Log(8.1, 0.89, 10));
-        setListAdapter(new ArrayAdapter<Log>(getActivity(),
-                android.R.layout.simple_list_item_activated_1, android.R.id.text1, list));
+
+        setListAdapter(new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_activated_1, DataHelper
+                        .getInstance(getActivity()).selectAll(), new String[] { Logs.TIME },
+                new int[] { android.R.id.text1 }, 0));
+        setHasOptionsMenu(true);
     } // onCreate(Bundle)
+
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        menu.add(Menu.NONE, Menu.FIRST, Menu.FIRST, "Add log").setShowAsAction(
+                MenuItem.SHOW_AS_ACTION_ALWAYS);
+        super.onCreateOptionsMenu(menu, inflater);
+    } // onCreateOptionsMenu(Menu, MenuInflater)
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == Menu.FIRST) {
+            final AddLogDialog d = new AddLogDialog(getActivity());
+
+            d.setButton(new OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final DataHelper db = DataHelper.getInstance(getActivity());
+                    db.insert(new Log(d.getLitres(), d.getPrice(), d.getMileage()));
+                    final SimpleCursorAdapter c = ((SimpleCursorAdapter) LogListFragment.this
+                            .getListAdapter());
+                    c.changeCursor(db.selectAll());
+                    c.notifyDataSetChanged();
+                } // onClick(View)
+            });
+            d.show();
+            return true;
+        } // if
+        return super.onOptionsItemSelected(item);
+    } // onOptionsItemSelected(MenuItem)
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
@@ -56,7 +87,7 @@ public final class LogListFragment extends ListFragment {
     public void onListItemClick(final ListView listView, final View view, final int position,
             final long id) {
         super.onListItemClick(listView, view, position, id);
-        mCallback.onItemSelected((Log) listView.getItemAtPosition(position));
+        mCallback.onItemSelected(listView.getItemIdAtPosition(position));
     } // onListItemClick(ListView, View, int, long)
 
     @Override

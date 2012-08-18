@@ -34,6 +34,10 @@ final class Log implements Parcelable {
         return price;
     } // getPrice()
 
+    public long getTime() {
+        return date.getTimeInMillis();
+    } // getTime()
+
     @Override
     public String toString() {
         return date.get(Calendar.DATE) + "/" + date.get(Calendar.MONTH) + "/"

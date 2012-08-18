@@ -12,10 +12,10 @@ public final class LogDetailFragment extends Fragment {
 
     private Log mItem;
 
-    static LogDetailFragment newInstance(final Log log) {
+    static LogDetailFragment newInstance(final long log) {
         final LogDetailFragment f = new LogDetailFragment();
         final Bundle args = new Bundle();
-        args.putParcelable(ARG_LOG, log);
+        args.putLong(ARG_LOG, log);
         f.setArguments(args);
         return f;
     } // newInstance(Log)
@@ -26,7 +26,7 @@ public final class LogDetailFragment extends Fragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mItem = getArguments().getParcelable(ARG_LOG);
+        mItem = DataHelper.getInstance(getActivity()).selectLog(getArguments().getLong(ARG_LOG));
     } // onCreate(Bundle)
 
     @Override
