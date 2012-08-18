@@ -1,8 +1,12 @@
 package uk.co.taxomania.apps.fuellog;
 
+import java.util.Calendar;
+
 import uk.co.taxomania.apps.fuellog.DataHelper.Logs;
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public final class LogListFragment extends ListFragment {
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -25,14 +30,28 @@ public final class LogListFragment extends ListFragment {
     public LogListFragment() {
     } // LogListFragment()
 
+    private static final class SimpleAdapter extends SimpleCursorAdapter {
+        public SimpleAdapter(final Context context) {
+            super(context, android.R.layout.simple_list_item_activated_1, DataHelper.getInstance(
+                    context).selectAll(), new String[] { },
+                    new int[] { }, 0);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            final Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(Logs.TIME)));
+            final String s = c.get(Calendar.DATE) + "/" + c.get(Calendar.MONTH) + "/"
+                    + c.get(Calendar.YEAR);
+            ((TextView) view.findViewById(android.R.id.text1)).setText(s);
+        }
+    }
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setListAdapter(new SimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_activated_1, DataHelper
-                        .getInstance(getActivity()).selectAll(), new String[] { Logs.TIME },
-                new int[] { android.R.id.text1 }, 0));
+        setListAdapter(new SimpleAdapter(getActivity()));
         setHasOptionsMenu(true);
     } // onCreate(Bundle)
 

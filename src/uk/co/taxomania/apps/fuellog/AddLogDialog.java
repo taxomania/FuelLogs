@@ -25,15 +25,18 @@ public class AddLogDialog extends Dialog {
     }
 
     public double getLitres() {
-        return Double.parseDouble(litres.getText().toString());
+        try {return Double.parseDouble(litres.getText().toString());}
+        catch(NumberFormatException e){return 0;}
     }
 
     public int getMileage() {
-        return Integer.parseInt(mileage.getText().toString());
+        try{return Integer.parseInt(mileage.getText().toString());}
+        catch(NumberFormatException e){return 0;}
     }
 
     public double getPrice() {
-        return Double.parseDouble(price.getText().toString());
+        try{return Double.parseDouble(price.getText().toString());}
+        catch(NumberFormatException e){return 0;}
     }
 
     public void setButton(final View.OnClickListener listener) {
