@@ -1,8 +1,9 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="?android:attr/textAppearanceLarge"
-    android:id="@+id/log_detail"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".LogDetailFragment" />
+    android:layout_height="match_parent" >
+
+    <include android:id="@+id/litres" layout="@layout/tblrow"/>
+    <include android:id="@+id/price" layout="@layout/tblrow"/>
+    <include android:id="@+id/mileage" layout="@layout/tblrow"/>
+
+</TableLayout>

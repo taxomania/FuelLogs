@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="app_name">Fuel Log</string>
-    <string name="title_log_detail">Log Detail</string>
-    <string name="title_log_list">Logs</string>
+    <string name="app_name">Fuel Logs</string>
+    <string name="title_log_detail">Fuel Log Details</string>
+    <string name="title_log_list">Fuel Logs</string>
 
 </resources>

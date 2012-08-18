@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class LogListActivity extends Activity implements LogListFragment.Callbacks {
-
+public final class LogListActivity extends Activity implements LogListFragment.Callback {
     private boolean mTwoPane;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_list);
 
@@ -17,11 +16,11 @@ public class LogListActivity extends Activity implements LogListFragment.Callbac
             mTwoPane = true;
             ((LogListFragment) getFragmentManager().findFragmentById(R.id.log_list))
                     .setActivateOnItemClick(true);
-        }
-    }
+        } // if
+    } // onCreate(Bundle)
 
     @Override
-    public void onItemSelected(Log id) {
+    public void onItemSelected(final Log id) {
         if (mTwoPane) {
             LogDetailFragment fragment = LogDetailFragment.newInstance(id);
             getFragmentManager().beginTransaction().replace(R.id.log_detail_container, fragment)
@@ -29,8 +28,8 @@ public class LogListActivity extends Activity implements LogListFragment.Callbac
 
         } else {
             Intent detailIntent = new Intent(this, LogDetailActivity.class);
-            detailIntent.putExtra(LogDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(LogDetailFragment.ARG_LOG, id);
             startActivity(detailIntent);
-        }
-    }
-}
+        } // else
+    } // onItemSelected(Log)
+} // class LogListActivity
