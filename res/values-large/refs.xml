@@ -1,0 +1,3 @@
+<resources>
+    <item type="layout" name="activity_log_list">@layout/activity_log_twopane</item>
+</resources>
